@@ -78,14 +78,14 @@ static void iperf_report_task(void *arg)
     while (!s_iperf_ctrl.finish) {
         vTaskDelay(delay_interval);
         actual_bandwidth = (s_iperf_ctrl.actual_len / 1e6 * 8) / interval;
-        printf("%4d-%4d sec       %.2f Mbits/sec\n", cur, cur + interval,
+        printf("%4d-%4d sec       %.2f Mbits/sec\n", (int)cur, (int)(cur + interval),
             actual_bandwidth);
         cur += interval;
         average = ((average * (k - 1) / k) + (actual_bandwidth / k));
         k++;
         s_iperf_ctrl.actual_len = 0;
         if (cur >= time) {
-            printf("%4d-%4d sec       %.2f Mbits/sec\n", 0, time,
+            printf("%4d-%4d sec       %.2f Mbits/sec\n", 0, (int)time,
                 average);
             break;
         }
@@ -413,7 +413,7 @@ static esp_err_t iperf_run_udp_client(void)
 
         client_socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
         ESP_GOTO_ON_FALSE((client_socket >= 0), ESP_FAIL, exit, TAG, "Unable to create socket: errno %d", errno);
-        ESP_LOGI(TAG, "Socket created, sending to %d:%d", s_iperf_ctrl.cfg.destination_ip4, s_iperf_ctrl.cfg.dport);
+        ESP_LOGI(TAG, "Socket created, sending to %d:%d", (int)s_iperf_ctrl.cfg.destination_ip4, s_iperf_ctrl.cfg.dport);
 
         setsockopt(client_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
         memcpy(&dest_addr, &dest_addr4, sizeof(dest_addr4));

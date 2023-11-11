@@ -1,0 +1,9 @@
+menu "Component lib_iperf Configuration"
+
+    config LIB_IPERF_USE
+        bool "Use lib_iperf component"
+        default y
+        help
+            Use iperf module.            
+    
+endmenu
